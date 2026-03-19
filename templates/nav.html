@@ -1,0 +1,40 @@
+    <div class="container py-2">
+        <div class="row top-info">
+            <div class="col-6">Somjeetkumar30@gmail.com</div>
+            <div class="col-6 text-end">+91 8690027554</div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="https://img.icons8.com/color/48/room.png" alt="Logo" class="me-2" width="30">
+                FIND <span class="brand-accent ms-1">ROOM</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="#" class="nav-link me-4 d-none d-md-block fw-bold">Contact us</a>
+                <a href="{% url 'room_upload' %}" class="btn btn-add-room px-4 me-3"> Add room</a>
+                
+                {% if request.user.is_authenticated %}
+                {% if  request.user.groups.all.0.name == "Admin"  or request.user.is_superuser %}
+                    <a href="{% url 'RoomList' %}"  class="nav-link text-primary fw-bold" >deshbord</a>
+                {% endif %}
+
+                
+                <p class="p-2 mt-3">{{request.user}} - {{request.user.group.name}}</p>
+                
+                 {% if request.user.image %}
+                <a href="{% url 'Profile' %}"><img src="{{ request.user.image.url }}" height="50" width="50" style="border-radius:50%;"></a>
+                {% endif %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn text-primary fw-bold">Logout</button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-link text-primary fw-bold">Login / </a>
+                <a href="{% url 'register' %}" class="nav-link text-primary fw-bold"> register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+

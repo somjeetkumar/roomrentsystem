@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="profile-header d-md-flex align-items-center text-center text-md-start bg-white p-3 rounded mt-4">
+            <img src="{{ request.user.image.url }}" alt="Owner" height="200px" width="200px" class="profile-img mb-3 mb-md-0 me-md-4 rounded-circle">
+            <div>
+                <h2 class="fw-bold mb-1"> {{ request.user }} <i class="bi bi-check-circle-fill text-primary ms-2" style="font-size: 1.2rem;"></i></h2>
+                <p class="text-muted mb-2"><i class="bi bi-geo-alt"></i> Suratgarh, Rajasthan | Member since 2021</p>
+                <div class="d-flex justify-content-center justify-content-md-start gap-2">
+                    <span class="badge bg-light text-dark border">4.8 ★ (24 Reviews)</span>
+                    <span class="badge bg-light text-dark border">12 Rooms Hosted</span>
+                </div>
+            </div>
+            <div class="ms-auto mt-3 mt-md-0">
+                <button class="btn btn-outline-primary btn-sm me-2">Edit Profile</button>
+                <!-- <button class="btn btn-add-room btn-sm">Post New Room</button> -->
+                <a href="{% url 'room_upload' %}" class="btn btn-add-room btn-sm">Post New Room</a>
+
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <ul class="nav nav-pills mb-4 justify-content-center justify-content-md-start" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="rooms-tab" data-bs-toggle="pill" data-bs-target="#rooms-content" type="button">My Rooms</button>
+                </li>
+                <!-- <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="stats-tab" data-bs-toggle="pill" data-bs-target="#stats-content" type="button">Inquiries</button>
+                </li> -->
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="rooms-content">
+                    <div class="row g-4">
+                        {%  for room in room_data %}
+                        <div class="col-md-6 col-lg-4 bg-white p-3 rounded">
+                            <div class="manage-room-card">
+                                <div class="position-relative">
+                                    <img src="{{ room.room_image.image.url }}" class="w-100 rounded-top" height="180" style="object-fit: cover;">
+                                    {% if room.room.room_checked == False %}
+                                        
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-warning status-badge">panding...</span>
+                                        {% else %}
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success status-badge">Live</span>
+                                        {% endif %}
+                                </div>
+                                <div class="p-3">
+                                     
+                        {% if room.room.available == True %}
+                        
+                        <p class="fw-bold mb-1 text-success ">available</p>
+                        {% else %}
+                        <p class="fw-bold mb-1 test-warning ">not available</p>
+                        {% endif %}
+                    
+
+                                    <h6 class="fw-bold mb-1">{{ room.room.title }}</h6>
+                                    <p class="small text-muted mb-2">{{ room.room.price }}</p>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm border w-100 btn-primary">Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger w-100">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="col-md-6 col-lg-4">
+                            <div class="manage-room-card h-100 d-flex align-items-center justify-content-center border-dashed bg-white p-3 rounded" style="border: 2px dashed #ccc; min-height: 250px;">
+                                <div class="text-center">
+                                    <i class="bi bi-plus-circle fs-1 text-muted"></i>
+                                    <p class="fw-bold text-muted mt-2">Post a New Room</p>
+                                    <a href="{% url 'room_upload' %}" class="btn btn-sm btn-add-room">Click to Start</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="stats-content">
+                    <div class="card border-0 shadow-sm p-4">
+                        <h5 class="fw-bold mb-4">Recent Inquiries</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Tenant Name</th>
+                                        <th>Room Interested</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Rahul Sharma</strong></td>
+                                        <td>Single Room - Block B</td>
+                                        <td>Oct 24, 2025</td>
+                                        <td><button class="btn btn-sm btn-primary">Reply</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Priya Verma</strong></td>
+                                        <td>Premium Flat - Near Bus Stand</td>
+                                        <td>Oct 22, 2025</td>
+                                        <td><button class="btn btn-sm btn-primary">Reply</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

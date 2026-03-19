@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h1 class="hero-title">Find your <span>dream room</span> with ease!</h1>
+                    <p class="lead fw-normal">Welcome to <strong>Find Room</strong>, your one-stop solution for finding the perfect room rentals in Suratgarh!</p>
+                    
+                    <div class="search-container mt-4">
+                        <label class="search-label">Start Your Search Now!</label>
+                        <input type="text" class="form-control form-control-lg" placeholder="Where would you like to go?">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-5">
+        <div class="row g-4">
+            <aside class="col-lg-3">
+                <div class="filter-box">
+                    <h4 class="filter-header mb-4">Filter</h4>
+                    <div class="input-group mb-4">
+                        <input type="text" class="form-control filter-search-box" placeholder="Search room no. S">
+                    </div>
+                    
+                    <h5 class="fw-bold mb-3">Room Rent</h5>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="rent1">
+                        <label class="form-check-label" for="rent1">Less than 1000rs</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="rent2">
+                        <label class="form-check-label" for="rent2">1000rs to 2000rs</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="rent3">
+                        <label class="form-check-label" for="rent3">2000rs to 3000rs</label>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="rent4">
+                        <label class="form-check-label" for="rent4">3000rs to 4000rs</label>
+                    </div>
+
+                    <button class="btn btn-light w-100 text-start d-flex justify-content-between align-items-center border">
+                        Near by <span>&gt;</span>
+                    </button>
+                </div>
+            </aside>
+
+            <div class="col-lg-9">
+
+                
+                {% for room in rooms %}
+                <div class="room-card p-3 border position-relative">
+                    <span class="save-badge ">
+                        {% if room.room.available == True %}
+                        available
+                        {% else %}
+                        Not available
+                        {% endif %}
+                    </span>
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="{{ room.image.image.url }}" class="room-image rounded" alt="Luxury Room">
+                        </div>
+                        <div class="col-md-7 ps-md-4 mt-3 mt-md-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 class="fw-bold mb-1">Take on rent this room</h5>
+
+                                <p class=""><b>{{room.room.city  }} - {{ room.room.pin_code }}</b></p>
+                                <p class=""><b>near by {{room.room.near_by}}</b></p>
+                                <p class="mb-1"><span class="fw-bold fs-5">{{ room.room.price }}</span> - Price</p>
+                                <p class="text-muted small"><em>{{room.room.room_number  }} - Room Number</em></p>
+
+                                
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="text-secondary"><i class="bi bi-geo-alt"></i></span>
+                                    <span class="fw-bold">4- <small class="text-muted fw-normal">star rating</small></span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button class="btn btn-orange-sm me-2">Book room</button>
+                                <!-- <button class="btn btn-blue-sm"></button> -->
+                                <a href="{% url 'room_details' room.room.id %}" class="btn btn-blue-sm">room details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

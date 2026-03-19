@@ -1,0 +1,55 @@
+{% extends 'deshbord/base_B.html' %}
+{% block content %}
+<div class="card-body p-0">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Room</th>
+                    <th>Price/Month</th>
+                    <th>Status</th>
+                    <th>View</th>
+                    <th>checked</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="roomTable">
+                {% for room in rooms %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="{{ room.image.image.url }}" class="room-img-sm me-3" alt="room">
+                            <div><span class="fw-bold">{{ room.room.title }}</span><br><small class="text-muted">ID: {{ room.room.room_number }}</small></div>
+                        </div>
+                    </td>
+                    
+                    
+                    <td>₹{{room.room.price}}</td>
+                    <td>
+                        {% if room.room.available == True %}
+                        <span class="badge bg-success">Available</span>
+                        {% else %}
+                        <span class="badge bg-warning">Not Available</span>
+                        {% endif %}
+                    </td>
+                    <td> <a href=""  class="btn btn bg-primary text-white">Details</a></td>
+                    <!-- <td>4.5 <i class="fas fa-star text-warning"></i></td> -->
+                    <td>
+                        {% if room.room.room_checked == True %}
+                         <a href="{% url 'check_room' room.room.id %}"  class="btn btn bg-success text-white">Checked</a></td>
+                         {% else %}
+                         <a href="{% url 'check_room' room.room.id %}"  class="btn btn bg-warning text-white">Uncheck</a></td>
+                         {% endif %}
+
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(this)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

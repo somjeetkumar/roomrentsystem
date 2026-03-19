@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Rooms - Find Room Suratgarh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root { --brand-orange: #FF5A00; --brand-blue: #0077C8; }
+        body { background-color: #f8f9fa; }
+        .filter-sidebar { background: white; border-radius: 12px; padding: 20px; position: sticky; top: 90px; height: fit-content; }
+        .room-card { border: none; transition: 0.3s; border-radius: 12px; overflow: hidden; }
+        .room-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .btn-brand { background-color: var(--brand-orange); color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">FIND <span style="color:var(--brand-orange)">ROOM</span></a>
+            <div class="d-flex gap-3">
+                <a href="about.html" class="nav-link">About</a>
+                <a href="profile.html" class="btn btn-brand btn-sm">My Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="filter-sidebar shadow-sm">
+                    <h5 class="fw-bold mb-3">Filters</h5>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Price Range (Monthly)</label>
+                        <input type="range" class="form-range" min="1000" max="10000" step="500">
+                        <div class="d-flex justify-content-between small text-muted"><span>1k</span><span>10k</span></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Room Type</label>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Single Room</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Double Sharing</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">PG / Hostel</label></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Amenities</label>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">AC</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Wi-Fi</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox"><label class="form-check-label">Parking</label></div>
+                    </div>
+                    <button class="btn btn-primary w-100 btn-sm">Apply Filters</button>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="fw-bold mb-0">Rooms in Suratgarh <span class="text-muted fw-normal fs-6">(12 Results)</span></h4>
+                    <select class="form-select form-select-sm w-auto">
+                        <option>Newest First</option>
+                        <option>Price: Low to High</option>
+                    </select>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card room-card h-100 shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80" class="card-img-top" height="180" style="object-fit: cover;">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="badge bg-success-subtle text-success">Verified</span>
+                                    <h5 class="text-primary fw-bold mb-0">₹3,500<small class="text-muted">/mo</small></h5>
+                                </div>
+                                <h6 class="fw-bold">Modern Single Room</h6>
+                                <p class="small text-muted mb-3"><i class="bi bi-geo-alt"></i> Near New Bus Stand, Suratgarh</p>
+                                <a href="room-details.html" class="btn btn-outline-primary btn-sm w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

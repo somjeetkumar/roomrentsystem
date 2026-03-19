@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-card p-4 p-md-5">
+                    <h2 class="fw-bold mb-4">Post a New Room</h2>
+                    <p class="text-muted mb-5">Fill in the details below to list your property on Find Room Suratgarh.</p>
+
+                    <form method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+                        {% csrf_token %}
+                        <h5 class="section-title">Basic Information</h5>
+                        <div class="row g-3 mb-5">
+      
+
+                            <div class="col-6">
+                                <label class="form-label">Property Title</label>
+                                {{form.title}}
+                            </div>
+
+                            <div class="col-6">
+                                <label class="form-label">Room Type</label>
+                                {{form.room_type}}
+                            </div>
+
+
+                            <div class="col-4">
+                                <label class="form-label">Room city</label>
+                                {{form.city}}
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">Room is near by in city</label>
+                                {{form.near_by}}
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">pin code your city</label>
+                                {{form.pin_code}}
+                            </div>
+
+
+                            <div class="col-6">
+                                <label class="form-label">Available</label>
+                                {{form.available}}
+                            </div>
+
+                            <div class="col-6">
+                                <label class="form-label">Location</label>
+                                {{form.location}}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                {{form.address}}
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">city</label>
+                                {{form.room_type}}
+                            </div>
+
+
+                          
+                            </div>
+
+
+
+                            
+                            <h5 class="section-title">Pricing & Photos</h5>
+                        <div class="row g-3 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label">Monthly Rent (Rs)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    {{ form.price }}
+                                </div>
+                            </div>
+                        <div class="col-md-6">
+                            <label class="form-label">select images related to your room</label>
+                            <input type="file" name="images" multiple>
+                        </div>
+                            
+                        <div class="col-md-12">
+                            <label class="form-label">add description</label>
+                            {{ form.description }}
+                        </div>
+
+                            
+                        <div class="text-center pt-4">
+                            <button type="submit" class="btn btn-submit shadow-sm">Post Listing Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

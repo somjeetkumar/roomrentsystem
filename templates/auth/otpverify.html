@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="auth-card row g-0">
+                        <div class="col-md-6 d-none d-md-block">
+                            <div class="auth-img"></div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                            <h3 class="fw-bold mb-4">OTP verify</h3>
+                            <form method="post"  onsubmit="showLoader()">
+                                {% csrf_token %}
+
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-muted">Enter OTP</label>
+                                <input name="otp" type="text" class="form-control" placeholder="xxxxxx">
+                                </div>
+
+                                <button type="submit" class="btn btn-login mb-3">Submit Otp</button>
+                                
+                            </form>
+                            <form action="{% url 'reSendOtp' %}" method="post">
+                                {% csrf_token %}
+                
+                                <button type="submit" class="text-center mt-4 small">otp Resend</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <div class="auth-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="auth-card row g-0">
+                        <div class="col-md-6 d-none d-md-block">
+                            <div class="auth-img"></div>
+                        </div>
+                        <div class="col-md-6 p-5">
+                            <h3 class="fw-bold mb-4">Welcome Back!</h3>
+                            <form method="post"  onsubmit="showLoader()">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-muted">Username</label>
+                                    <input name="username" type="text" class="form-control" placeholder="raman">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-muted">PASSWORD</label>
+                                <input name="password" type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember">
+                                        <label class="form-check-label small" for="remember">Remember me</label>
+                                    </div>
+                                    <a href="#" class="small text-decoration-none">Forgot Password?</a>
+                                </div>
+                                <button type="submit" class="btn btn-login mb-3">Login</button>
+                                
+                                <div class="text-center my-3 text-muted small">OR LOGIN WITH</div>
+                                <button type="button" class="social-btn"><i class="bi bi-google me-2"></i> Google</button>
+                                
+                                <p class="text-center mt-4 small">Don't have an account? <a href="register.html" class="text-decoration-none fw-bold">Register here</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

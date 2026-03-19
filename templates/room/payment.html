@@ -1,0 +1,72 @@
+<button id="rzp-button1">Pay Now</button>
+<p>{{ order_id }}</p>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+var options = {
+    "key": "rzp_test_SQwz17owTvEaGL",
+    "amount": "{{ order.amount }}",
+    "currency": "INR",
+    "name": "My Website",
+    "description": "Test Payment",
+    "order_id": "{{ order.id }}",
+
+    "handler": function (response){
+
+        console.log("Payment ID:", response.razorpay_payment_id);
+
+        const orderId = "{{ order.id }}";
+        console.log("{{ order.id }}",'================')
+        const paymentId = response.razorpay_payment_id;
+        // window.location.href =
+        // `/room/success/${orderId}/?payment_id=${paymentId}`;
+        window.location.href ="{% url 'success' order.id %}?payment_id=" + response.razorpay_payment_id;
+
+    }
+ };
+
+var rzp1 = new Razorpay(options);
+
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+
+</script>
+
+<!-- 
+
+// <button id="rzp-button1">Pay Now</button>
+
+// <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+// <script> -->
+<!-- 
+// var options = {
+//     "key": "{{ razorpay_key }}",
+//     "amount": "{{ order.amount }}",
+//     "currency": "INR",
+//     "name": "Room Booking",
+//     "description": "Room Payment",
+//     "order_id": "{{ order.id }}",
+
+//     "handler": function (response){
+
+//         const paymentId = response.razorpay_payment_id;
+//         const orderId = "{{ order.id }}";
+//         console.log(orderId)
+//         // window.location.href =`/room/success/`;
+//         window.location.href =
+//         `/room/success/${orderId}/`;
+//     }
+// };
+
+// var rzp1 = new Razorpay(options);
+
+// document.getElementById("rzp-button1").onclick = function(e){
+//     rzp1.open();
+//     e.preventDefault();
+// }
+
+// </script> -->

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="container my-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Suratgarh</a></li>
+              <li class="breadcrumb-item active">Room 4567</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-lg-5 order-2 order-lg-1">
+                <div class="details-card">
+                    <span class="badge bg-success mb-2">Available</span>
+                    <h1 class="fw-bold h2">{{ room.title }}</h1>
+                    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ room.title }}</p>
+                    
+                    <hr>
+
+                    <div class="mb-4">
+                        <span class="price-tag">{{ room.price }}</span> <span class="text-muted">/ month</span>
+                    </div>
+
+                    <h5 class="fw-bold mt-4">Description</h5>
+                    <p class="text-secondary">
+                        {{ room.description }}
+                    </p>
+
+                    <h5 class="fw-bold mt-4">Amenities</h5>
+                    <div class="mb-4">
+                        <span class="amenity-badge"><i class="bi bi-wifi"></i> Free Wi-Fi</span>
+                        <span class="amenity-badge"><i class="bi bi-droplet"></i> 24/7 Water</span>
+                        <span class="amenity-badge"><i class="bi bi-plug"></i> Power Backup</span>
+                        <span class="amenity-badge"><i class="bi bi-bicycle"></i> Parking Area</span>
+                        <span class="amenity-badge"><i class="bi bi-snow"></i> Air Cooled</span>
+                    </div>
+
+                    <div class="alert alert-light border border-info d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill text-info me-3 fs-4"></i>
+                        <div class="small">Room Number: <strong>4567</strong><br>Floor: 2nd Floor</div>
+                    </div>
+
+                    
+                    {% if room.available == True %}
+                    <a class="btn btn-book-now mt-3" href="{% url 'payment' room.id %}">Confirm & Book Now</a>
+                    {% else %}
+                    <button class="btn btn-book-now mt-3">This room is Booked</button>
+                    {% endif %}
+                    <p class="text-center mt-3 small text-muted">No advance payment required for site visit.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-7 order-1 order-lg-2">
+
+
+                <div class="main-img-container shadow-sm">
+                    <img id="mainImage" src="{{ images.0.image.url }}" alt="Room View">
+                </div>
+                
+                <div class="row gx-2 mt-2">
+                    <!-- <div class="col-3">
+                        <img class="thumb-img thumb-active" src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80" onclick="changeImage(this)">
+                    </div> -->
+                    
+                    
+                    {% for image in images %}
+                        <div class="col-3">
+                            <img class="thumb-img" src="{{  image.image.url  }}" onclick="changeImage(this)">
+                        </div>
+                    {% endfor %}
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function changeImage(thumbnail) {
+            // Get the big image element
+            const mainImg = document.getElementById('mainImage');
+            
+            // 1. Change the source of the big image to match the clicked thumbnail
+            mainImg.src = thumbnail.src;
+
+            // 2. Remove the "active" border from all thumbnails
+            const thumbnails = document.querySelectorAll('.thumb-img');
+            thumbnails.forEach(img => img.classList.remove('thumb-active'));
+
+            // 3. Add the "active" border to the clicked thumbnail
+            thumbnail.classList.add('thumb-active');
+        }
+    </script>
+
+{% endblock %}
