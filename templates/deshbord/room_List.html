@@ -42,8 +42,10 @@
                          {% endif %}
 
                     <td>
-                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRoom(this)"><i class="fas fa-trash"></i></button>
+                        
+                
+                        <a  class="btn btn-sm btn-outline-danger" href="{% url 'DeleteRoom_admin' room.room.id %}"><i class="fas fa-trash"></i></a>
+                
                     </td>
                 </tr>
                 {% endfor %}
