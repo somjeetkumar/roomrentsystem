@@ -7,7 +7,9 @@ from django.forms import inlineformset_factory
 
 class RegisterForm(UserCreationForm):
     group = forms.ModelChoiceField(
-        queryset= Group.objects.all(),
+        # queryset= Group.objects.all(),
+        queryset=Group.objects.filter(name__in=['Owner', 'Renter']),
+
         required=True
     )
     class Meta:

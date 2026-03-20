@@ -5,8 +5,8 @@
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Suratgarh</a></li>
-              <li class="breadcrumb-item active">Room 4567</li>
+              <li class="breadcrumb-item"><a href="#">{{ room.city }}</a></li>
+              <li class="breadcrumb-item active">Room {{ room.room_number }}</li>
             </ol>
         </nav>
 
@@ -39,7 +39,7 @@
 
                     <div class="alert alert-light border border-info d-flex align-items-center">
                         <i class="bi bi-info-circle-fill text-info me-3 fs-4"></i>
-                        <div class="small">Room Number: <strong>4567</strong><br>Floor: 2nd Floor</div>
+                        <div class="small">Room Number: <strong>{{ room.room_number }}</strong><br>Floor: 2nd Floor</div>
                     </div>
 
                     

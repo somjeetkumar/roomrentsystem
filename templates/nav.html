@@ -24,7 +24,11 @@
                 <p class="p-2 mt-3">{{request.user}} - {{request.user.group.name}}</p>
                 
                  {% if request.user.image %}
-                <a href="{% url 'Profile' %}"><img src="{{ request.user.image.url }}" height="50" width="50" style="border-radius:50%;"></a>
+                    {% if  request.user.groups.all.0.name  == "Owner"%}
+                        <a href="{% url 'Profile' %}"><img src="{{ request.user.image.url }}" height="50" width="50" style="border-radius:50%;"></a>
+                    {% else %}
+                        <img src="{{ request.user.image.url }}" height="50" width="50" style="border-radius:50%;">
+                    {% endif %}
                 {% endif %}
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}

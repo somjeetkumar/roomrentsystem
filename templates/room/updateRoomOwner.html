@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-card p-4 p-md-5">
+                    <h2 class="fw-bold mb-4">update a New Room</h2>
+                    <p class="text-muted mb-5">update in the details below to list your property.</p>
+
+                    <form method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+                        {% csrf_token %}
+                        <h5 class="section-title">Basic Information</h5>
+                        <div class="row g-3 mb-5">
+      
+
+                            <div class="col-6">
+                                <label class="form-label">Property Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g., Spacious Single Room near Bus Stand" value="{{room.title}}">
+                            </div>
+
+                            <div class="col-6">
+                                <label class="form-label">Room Type</label>
+                                <input type="text" name="room_type" class="form-control" placeholder="e.g., Spacious Single Room near Bus Stand" value="{{room.room_type}}">
+                            </div>
+
+
+                            <div class="col-4">
+                                <label class="form-label">Room city</label>
+                                <input type="text" name="city" class="form-control" placeholder="e.g., jaipur" value="{{room.city}}">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">Room is near by in city</label>
+                                <input type="text" name="near_by" class="form-control" placeholder="e.g.,  Dadi Ka Phatak" value="{{room.near_by}}">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">pin code your city</label>
+                                <input type="text" name="pin_code" class="form-control" placeholder="e.g., 000000" value="{{room.pin_code}}">
+
+                            </div>
+
+
+                            <!-- <div class="col-6">
+                                <label class="form-label">Available</label>
+                                <input type="checkbox" name="available" class="form-check-input" value="{{room.available}}">
+                            </div> -->
+
+                            <div class="col-6">
+                                <label class="form-label">Location</label>
+                                <input type="text" name="location" placeholder="location" class="form-control form-control-lg rounded-3" value="{{room.location}}">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Address</label>
+                                <input type="text" name="address" placeholder="Enter address" class="form-control form-control-lg rounded-3" value="{{room.address}}">
+                            </div>                          
+                            </div>
+
+
+
+                            
+                            <h5 class="section-title">Pricing & Photos</h5>
+                        <div class="row g-3 mb-5">
+                            <div class="col-md-6">
+                                <label class="form-label">Monthly Rent (Rs)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number" name="price" placeholder="Enter room price" class="form-control form-control-lg rounded-3" value="{{room.price}}">
+
+                                </div>
+                            </div>
+                        <div class="col-md-12">
+                            <label class="form-label">add description</label>
+                            <textarea name="description" id="">{{ room.description }}</textarea>
+                        </div>
+
+                            
+                        <div class="col-md-12">
+                            <h2> image sesstion</h2>
+                            {% for img in images %}
+                            <img src="{{ img.image.url }}" width="100">
+                            <!-- <input type="file" name="images" multiple> -->
+                            <label>
+                                <input type="checkbox" name="delete_images" value="{{ img.id }}">
+                                Delete
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-12">
+                            <h4>Add New Images</h4>
+                                                
+                            <input type="file" name="new_images" multiple>
+                                                
+                            <br><br>
+
+                        <div class="text-center pt-4">
+                            <button type="submit" class="btn btn-submit shadow-sm">Post Listing Now</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

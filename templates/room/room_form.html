@@ -6,9 +6,29 @@
                 <div class="form-card p-4 p-md-5">
                     <h2 class="fw-bold mb-4">Post a New Room</h2>
                     <p class="text-muted mb-5">Fill in the details below to list your property on Find Room Suratgarh.</p>
-
-                    <form method="post" enctype="multipart/form-data" onsubmit="showLoader()">
+<!-- onsubmit="showLoader()" -->
+                    <form method="post" enctype="multipart/form-data"  onsubmit="showLoader()"  novalidate>
                         {% csrf_token %}
+
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ field.label }} - {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                            
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                            
+
+                        
                         <h5 class="section-title">Basic Information</h5>
                         <div class="row g-3 mb-5">
       
@@ -83,7 +103,7 @@
                             {{ form.description }}
                         </div>
 
-                            
+
                         <div class="text-center pt-4">
                             <button type="submit" class="btn btn-submit shadow-sm">Post Listing Now</button>
                         </div>

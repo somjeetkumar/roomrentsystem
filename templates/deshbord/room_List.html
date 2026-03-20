@@ -32,7 +32,7 @@
                         <span class="badge bg-warning">Not Available</span>
                         {% endif %}
                     </td>
-                    <td> <a href=""  class="btn btn bg-primary text-white">Details</a></td>
+                    <td> <a href="{% url 'AdminRoomDeatil'  room.room.id  %}"  class="btn btn bg-primary text-white">Details</a></td>
                     <!-- <td>4.5 <i class="fas fa-star text-warning"></i></td> -->
                     <td>
                         {% if room.room.room_checked == True %}

@@ -1,0 +1,120 @@
+{% extends 'deshbord/base_B.html' %}
+
+{% block content %}
+<style>
+            .main-img-container { width: 100%; height: 450px; overflow: hidden; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ddd; }
+        .main-img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .thumb-img { width: 100%; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .thumb-img:hover { border-color: var(--brand-orange); opacity: 0.8; }
+        .thumb-active { border-color: var(--brand-orange) !important; }
+
+        /* Detail Sidebar Styling */
+        .details-card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .price-tag { font-size: 2rem; font-weight: 800; color: var(--brand-blue); }
+        .amenity-badge { background: #e9ecef; color: #444; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; display: inline-block; margin: 0 5px 10px 0; }
+        .btn-book-now { background-color: var(--brand-orange); color: white; border-radius: 30px; padding: 12px; font-weight: bold; width: 100%; border: none; font-size: 1.1rem; }
+        
+</style>
+    <div class="container my-5">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">{{context.room.city}}</a></li>
+              <li class="breadcrumb-item active">Room {{ context.room.room_number }}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-lg-5 order-2 order-lg-1">
+                <div class="details-card">
+                    <h5><span class="text-primary" >{{ context.room.onwer }}</span>(room owner) 
+                        {% if context.renter != None %}
+                        - > 
+                        <span style="color: #e04e00;">{{ context.renter }}</span>
+                        (renter)
+                        {% endif %}
+                    </h5>
+                    {% if context.room.available == True %}
+                    <span class="badge bg-success mb-2">available</span>
+                    {% else %}
+                    <span class="badge bg-warning mb-2">not available</span>
+                    {% endif %}
+
+                    <h1 class="fw-bold h2">{{ room.title }}</h1>
+                    <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ room.title }}</p>
+                    
+                    <hr>
+
+                    <div class="mb-4">
+                        <span class="price-tag">{{ context.room.price }}</span> <span class="text-muted">/ month</span>
+                    </div>
+
+                    <h5 class="fw-bold mt-4">Description</h5>
+                    <p class="text-secondary">
+                        {{ context.room.description }}
+                    </p>
+
+                    <h5 class="fw-bold mt-4">Amenities</h5>
+                    <div class="mb-4">
+                        <span class="amenity-badge"><i class="bi bi-wifi"></i> Free Wi-Fi</span>
+                        <span class="amenity-badge"><i class="bi bi-droplet"></i> 24/7 Water</span>
+                        <span class="amenity-badge"><i class="bi bi-plug"></i> Power Backup</span>
+                        <span class="amenity-badge"><i class="bi bi-bicycle"></i> Parking Area</span>
+                        <span class="amenity-badge"><i class="bi bi-snow"></i> Air Cooled</span>
+                    </div>
+
+                    <div class="alert alert-light border border-info d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill text-info me-3 fs-4"></i>
+                        <div class="small">Room Number: <strong>4567</strong><br>Floor: 2nd Floor</div>
+                    </div>
+
+                    
+                 
+                    <p class="text-center mt-3 small text-muted">No advance payment required for site visit.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-7 order-1 order-lg-2">
+
+
+                <div class="main-img-container shadow-sm">
+                    <img id="mainImage" src="{{ context.images.0.image.url }}" alt="Room View">
+                </div>
+                
+                <div class="row gx-2 mt-2">
+                    <!-- <div class="col-3">
+                        <img class="thumb-img thumb-active" src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80" onclick="changeImage(this)">
+                    </div> -->
+                    
+                    
+                    {% for image in context.images %}
+                        <div class="col-3">
+                            <img class="thumb-img" src="{{ image.image.url  }}" onclick="changeImage(this)">
+                        </div>
+                    {% endfor %}
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        function changeImage(thumbnail) {
+            // Get the big image element
+            const mainImg = document.getElementById('mainImage');
+            
+            // 1. Change the source of the big image to match the clicked thumbnail
+            mainImg.src = thumbnail.src;
+
+            // 2. Remove the "active" border from all thumbnails
+            const thumbnails = document.querySelectorAll('.thumb-img');
+            thumbnails.forEach(img => img.classList.remove('thumb-active'));
+
+            // 3. Add the "active" border to the clicked thumbnail
+            thumbnail.classList.add('thumb-active');
+        }
+    </script>
+
+{% endblock %}

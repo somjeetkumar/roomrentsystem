@@ -23,6 +23,18 @@ import json
 # Create your views here.
 
 
+
+
+def dashboard_stats(request):
+    if request.user.is_authenticated:
+        return {
+            'total_rooms': Room.objects.all().count(),
+            'total_room_owners':UserModel.objects.filter(groups__name='Owner').count(),
+            'total_room_renter':UserModel.objects.filter(groups__name='Renter').count(),
+        }
+    return {}
+
+
 class RegisterView(CreateView):
     form_class = RegisterForm
     model = UserModel
@@ -106,7 +118,7 @@ class UserEmailVerifiy(View):
 
 class loginView(View):
     def get(self,request):
-        return render(request, 'auth/login.html')
+        return render(request, 'auth/login.html',{"error":""})
     
     def post(self,request):
         start = time.time()
@@ -114,23 +126,24 @@ class loginView(View):
         print('auth time',time.time()-start,' -- - -- ', user)
         if user is not None:
             login(request,user)
-            print('auth time',time.time()-start)
+            # print('auth time',time.time()-start)
             return redirect('home')
-        print('auth time',time.time()-start)
-        return render(request, 'auth/login.html')
+        # print('auth time',time.time()-start)
+        return render(request, 'auth/login.html', {"error":"Incorrect username or password"})
     
 
 class logoutUserView(LogoutView):
     next_page = 'home'
 
-class HomeView(ListView):
-    model = Room
-    template_name = 'room/index.html'
-    # context_object_name = 'rooms'
-    def get_context_data(self, **kwargs):   
-        # print(self.request.user.get_all_permissions())
-        context = super().get_context_data(**kwargs)
-        rooms = Room.objects.filter(room_checked=True).order_by('-create_at')
+class HomeView(View):
+    def get(self,request):
+        rooms = Room.objects.filter(room_checked=True,available=True).order_by('-create_at')
+        city = request.GET.get('city','').strip()
+        pin = request.GET.get('pinCode','').strip()
+        if city:
+            rooms = rooms.filter(city__icontains=city)
+        if pin:
+            rooms = rooms.filter(pin_code__icontains=pin)
         room_data = []
         for room in rooms:
             image =Room_Image.objects.filter(room=room, check_image=True).first()
@@ -138,10 +151,8 @@ class HomeView(ListView):
                 'room':room,
                 "image":image
             })
-        #     print(room,image,' - -- - ')
-        context['rooms'] = room_data
         
-        return context
+        return render(request, 'room/index.html', {'rooms':room_data})
 
 
 
@@ -166,6 +177,11 @@ class RoomUploadView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
             Room_Image.objects.create(room=room,image=image)
         
         return super().form_valid(form)
+
+
+    def form_invalid(self, form):
+        print("FORM ERRORS:", form.errors) 
+        return super().form_invalid(form)
     
 
 
@@ -211,7 +227,7 @@ class CheckRoom_by_Admin(LoginRequiredMixin,PermissionRequiredMixin,View):
                 else:
                     img.check_image = False
                     img.save()
-            return redirect('home')
+            return redirect('RoomList')
         return render(
             request,
             'room/check_room.html',
@@ -245,9 +261,74 @@ class ProfileView(LoginRequiredMixin,ListView):
                         'room':room,
                         'room_image':image
                     })
-        context['room_data'] = room_data
-        return context
+
+    def dispatch(self, request, *args, **kwargs):
+
+            if not request.user.groups.filter(name='Owner').exists():
+                return redirect('home')
+
+            return super().dispatch(request, *args, **kwargs)
+
+
+
+class roomdeleteByOwner(View):
+    def get(self,request,pk):
+        return render(request,'room/ownerRoomDelete.html')
+    def post(self,request,pk):
+        room = get_object_or_404(Room,pk=pk)
+        room.delete()
+        return redirect('Profile')
+
+
+class update_room_owner(View):
+    def get(self,request,pk):
+        room = get_object_or_404(Room,pk=pk)
+        images = Room_Image.objects.filter(room=room)
+
+        context = {
+            "room":room,
+            "images":images
+        }
+        return render(request,"room/updateRoomOwner.html",context)
+    
+    def post(self,request,pk):
+        room = get_object_or_404(Room,pk=pk)
+        room.title = request.POST.get("title")
+        room.room_type = request.POST.get("room_type")
+        room.city = request.POST.get("city")
+        room.near_by = request.POST.get("near_by")
+        room.pin_code = request.POST.get("pin_code")
+        # room.available = request.POST.get("available")
+        room.location = request.POST.get("location")
+        room.address = request.POST.get("address")
+        room.price = request.POST.get("price")
+        room.description = request.POST.get("description")
+
+        room.room_checked = False
+        room.save()
+        delete_images = request.POST.getlist('delete_images')
+        if delete_images:
+            for img_id in delete_images:
+                img = get_object_or_404(Room_Image,id=img_id)
+                img.image.delete()
+                img.delete()
+            
+        new_image = request.FILES.getlist('new_images')
+        if new_image:
+            for img in new_image:
+                Room_Image.objects.create(
+                room=room,
+                image=img,
+                check_image=False
+                )
         
+        return redirect('Profile')
+
+
+
+    
+
+
     
 
 
@@ -302,9 +383,11 @@ class PaymentView(LoginRequiredMixin, TemplateView):
             amount=amount,
             razorpay_order_id=order["id"]
         )
+        room.available = False
+        room.save()
 
         context["order"] = order
-        print(order,'===================')
+        # print(order,'===================')
         context["payment"] = payment
         context["razorpay_key"] = settings.RAZORPAY_KEY_ID
 
@@ -429,3 +512,32 @@ class Room_list(ListView):
         return context
 
 
+
+class AdminRoomDeatil(View):
+    def get(self,request,pk):
+        room = get_object_or_404(Room, pk=pk)
+        room_image = Room_Image.objects.filter(room=room)
+        # payment =  get_object_or_404(Payment,room=room)
+        payment = Payment.objects.filter(room=room, paid=True).first()
+
+        renter = None
+        if payment:
+            renter = payment.user
+        
+        context = {
+            "room":room,
+            "images":room_image,
+            "renter":renter
+        }
+    
+        return render(request, 'deshbord/room-details.html', {"context":context})
+    
+
+
+
+class DeleteRoom_admin(View):
+    def get(self,request,pk):
+        room = get_object_or_404(Room,pk=pk)
+        room.delete()
+        return redirect('RoomList')
+        
