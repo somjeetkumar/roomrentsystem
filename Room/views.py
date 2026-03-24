@@ -163,7 +163,7 @@ class RoomUploadView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
     form_class = RoomForm
     template_name = 'room/room_form.html'
     permission_required = 'Room.add_room'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('Profile')
 
     def form_valid(self, form):
         # room = form.save(commit=False)
@@ -261,6 +261,8 @@ class ProfileView(LoginRequiredMixin,ListView):
                         'room':room,
                         'room_image':image
                     })
+        context['room_data'] = room_data
+        return context
 
     def dispatch(self, request, *args, **kwargs):
 
@@ -342,7 +344,11 @@ class RoomDeatils(LoginRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         room = self.object
-        roomImages = Room_Image.objects.filter(room=room,check_image=True)
+        if room.room_checked == True:
+            roomImages = Room_Image.objects.filter(room=room,check_image=True)
+        else:
+            roomImages = Room_Image.objects.filter(room=room)
+
         context['room'] = room
         context['images'] = roomImages
 
@@ -516,8 +522,15 @@ class Room_list(ListView):
 class AdminRoomDeatil(View):
     def get(self,request,pk):
         room = get_object_or_404(Room, pk=pk)
-        room_image = Room_Image.objects.filter(room=room)
+        
+        # room_image = Room_Image.objects.filter(room=room)
         # payment =  get_object_or_404(Payment,room=room)
+        if room.room_checked == True:
+            room_image =Room_Image.objects.filter(room=room, check_image=True)
+              
+        else:
+            room_image =Room_Image.objects.filter(room=room)
+
         payment = Payment.objects.filter(room=room, paid=True).first()
 
         renter = None
